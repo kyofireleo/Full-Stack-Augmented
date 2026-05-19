@@ -8,14 +8,6 @@
       <form [formGroup]="productoForm">
         <div class="form-row">
           <mat-form-field appearance="outline" class="form-field">
-            <mat-label>Código</mat-label>
-            <input matInput formControlName="codigo" type="number" [disabled]="isEditing">
-            <mat-error *ngIf="productoForm.get('codigo')?.hasError('required')">
-              Código es requerido
-            </mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="outline" class="form-field">
             <mat-label>Nombre</mat-label>
             <input matInput formControlName="nombre" maxlength="100">
             <mat-hint align="end">{{ productoForm.get('nombre')?.value?.length || 0 }}/100</mat-hint>

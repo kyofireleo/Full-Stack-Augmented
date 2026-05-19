@@ -1,6 +1,7 @@
 package com.augmented.developer.backend.model.entities;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -9,19 +10,24 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "inventarios")
 public class InventariosEntity {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private LocalDate fecha;
+    @Column(name = "fecha", nullable = false)
+    private String fecha;
+
+    @Column(name = "responsable", nullable = false)
     private String responsable;
 
     @OneToMany(mappedBy = "inventario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
@@ -30,9 +36,9 @@ public class InventariosEntity {
     public InventariosEntity() {
     }
 
-    public InventariosEntity(Integer id, String fecha, String responsable, List<InventarioProductosEntity> productos) {
+    public InventariosEntity(Integer id, LocalDateTime fecha, String responsable, List<InventarioProductosEntity> productos) {
         this.id = id;
-        this.fecha = LocalDate.parse(fecha);
+        this.fecha = fecha.format(formatter);
         this.responsable = responsable;
         this.productos = productos != null ? productos : new ArrayList<>();
         this.productos.forEach(producto -> producto.setInventario(this));
@@ -46,12 +52,12 @@ public class InventariosEntity {
         this.id = id;
     }
 
-    public LocalDate getFecha() {
-        return fecha;
+    public LocalDateTime getFecha() {
+        return LocalDateTime.parse(fecha, formatter);
     }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
+    public void setFecha(LocalDateTime fecha) {
+        this.fecha = fecha.format(formatter);
     }
 
     public String getResponsable() {

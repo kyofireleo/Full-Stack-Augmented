@@ -53,8 +53,7 @@ export class InventarioFormComponent implements OnInit {
     private dialog: MatDialog
   ) {
     this.inventarioForm = this.fb.group({
-      responsable: ['', [Validators.required, Validators.maxLength(100)]],
-      fecha: [null, Validators.required]
+      responsable: ['', [Validators.required, Validators.maxLength(100)]]
     });
   }
 
@@ -97,8 +96,7 @@ export class InventarioFormComponent implements OnInit {
       (response) => {
         console.log('Inventario cargado:', response.data);
         this.inventarioForm.patchValue({
-          responsable: response.data.responsable,
-          fecha: response.data.fecha
+          responsable: response.data.responsable
         });
 
         this.productoInventarioList = response.data.productos.map(p => ({
@@ -130,7 +128,7 @@ export class InventarioFormComponent implements OnInit {
       if (result) {
         const inventario: Inventario = {
           id: this.id || 0,
-          fecha: this.inventarioForm.get('fecha')?.value || new Date().toISOString().replace("T", " "),
+          fecha: new Date().toISOString().replace('T', ' ').substring(0, 19), // Formato YYYY-MM-DD HH:MM:SS
           responsable: this.inventarioForm.get('responsable')?.value,
           productos: this.productoInventarioList.map(p => ({
             codigo: p.codigo,

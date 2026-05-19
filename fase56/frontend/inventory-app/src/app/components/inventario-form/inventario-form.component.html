@@ -16,15 +16,6 @@
             </mat-error>
           </mat-form-field>
         </div>
-        <div class="form-row">
-          <mat-form-field appearance="outline" class="form-field full-width">
-            <mat-label>Fecha</mat-label>
-            <input matInput formControlName="fecha" type="date">
-            <mat-error *ngIf="inventarioForm.get('fecha')?.hasError('required')">
-              Fecha es requerida
-            </mat-error>
-          </mat-form-field>
-        </div>  
       </form>
       <div class="table-wrapper">
         <div class="table-section" *ngIf="loaded">

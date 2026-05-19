@@ -38,7 +38,6 @@ export class ProductoFormComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {
     this.productoForm = this.fb.group({
-      codigo: ['', [Validators.required, Validators.pattern(/^\d+$/)]],
       nombre: ['', [Validators.required, Validators.maxLength(100)]],
       descripcion: ['', [Validators.required, Validators.maxLength(500)]],
       altura: ['', [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]],
@@ -96,6 +95,7 @@ export class ProductoFormComponent implements OnInit {
         }
       );
     } else {
+      producto.codigo = 0; // El backend asignará el código
       this.productoService.nuevo(producto).subscribe(
         () => {
           this.snackBar.open('Producto guardado correctamente', 'Cerrar', { duration: 3000 });

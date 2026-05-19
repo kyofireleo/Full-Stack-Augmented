@@ -80,10 +80,8 @@ public class ProductosController {
 
     @PostMapping("/nuevo")
     public ResponseEntity<Response> nuevo(@RequestBody Producto producto) {
-        if (productosRepository.existsById(producto.codigo())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
         ProductosEntity entity = toEntity(producto);
+        entity.setCodigo(null); // Asegurar que se genere un nuevo código
         ProductosEntity saved = productosRepository.save(entity);
         Response response = new Response(HttpStatus.CREATED.value(), null, toRecord(saved));
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

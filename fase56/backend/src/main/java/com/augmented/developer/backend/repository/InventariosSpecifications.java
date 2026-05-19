@@ -5,8 +5,6 @@ import com.augmented.developer.backend.model.records.FiltroInventario;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +21,6 @@ public final class InventariosSpecifications {
             if (filtro.id() != null) {
                 predicates.add(cb.equal(root.get("id"), filtro.id()));
             }
-            /*if (filtro.fecha() != null) {
-                predicates.add(cb.equal(root.<LocalDate>get("fecha"), LocalDate.parse(filtro.fecha())));
-            }*/
             if (filtro.responsable() != null && !filtro.responsable().isEmpty()) {
                 predicates.add(cb.like(cb.lower(root.get("responsable")), "%" + filtro.responsable().toLowerCase() + "%"));
             }

@@ -24,12 +24,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @RestController
@@ -38,7 +35,7 @@ public class InventariosController {
 
     private final InventariosRepository inventariosRepository;
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     @Value("${app.pagination.size:25}")
     private int defaultPageSize;
@@ -105,29 +102,6 @@ public class InventariosController {
         return ResponseEntity.ok(response);
     }
 
-    private static boolean matchesFiltro(InventariosEntity entity, FiltroInventario filtro) {
-        if (filtro == null) {
-            return true;
-        }
-        if (filtro.id() != null && !filtro.id().equals(entity.getId())) {
-            return false;
-        }
-        if (filtro.fecha() != null && !Objects.equals(filtro.fecha(), entity.getFecha())) {
-            return false;
-        }
-        if (filtro.responsable() != null && !containsIgnoreCase(entity.getResponsable(), filtro.responsable())) {
-            return false;
-        }
-        return true;
-    }
-
-    private static boolean containsIgnoreCase(String value, String search) {
-        if (value == null || search == null) {
-            return false;
-        }
-        return value.toLowerCase(Locale.ROOT).contains(search.toLowerCase(Locale.ROOT));
-    }
-
     private static Inventario toRecord(InventariosEntity entity) {
         List<ProductosInventario> productos = entity.getProductos().stream()
                 .map(producto -> new ProductosInventario(producto.getCodigo(), producto.getNombre(), producto.getExistenciaActual()))
@@ -139,14 +113,14 @@ public class InventariosController {
         List<InventarioProductosEntity> productos = inventario.productos().stream()
                 .map(producto -> new InventarioProductosEntity(null, producto.codigo(), producto.nombre(), producto.existenciaActual(), null))
                 .collect(Collectors.toList());
-        return new InventariosEntity(inventario.id(), inventario.fecha(), inventario.responsable(), productos);
+        return new InventariosEntity(inventario.id(), (inventario.fecha() != null ? LocalDateTime.parse(inventario.fecha(), formatter) : LocalDateTime.now()), inventario.responsable(), productos);
     }
 
     private static InventariosEntity updateEntity(InventariosEntity existing, Inventario inventario) {
         if(inventario.fecha() != null) {
-            existing.setFecha(LocalDate.parse(inventario.fecha()));
+            existing.setFecha(LocalDateTime.parse(inventario.fecha(), formatter));
         }else{
-            existing.setFecha(LocalDate.now());
+            existing.setFecha(LocalDateTime.now());
         }
         existing.setResponsable(inventario.responsable());
         existing.getProductos().clear();

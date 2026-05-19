@@ -6,7 +6,7 @@ export interface ProductoInventario {
 
 export interface Inventario {
   id: number;
-  fecha: Date;
+  fecha: string;
   responsable: string;
   productos: ProductoInventario[];
 }
