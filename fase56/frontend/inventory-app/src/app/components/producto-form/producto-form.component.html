@@ -1,0 +1,95 @@
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ isEditing ? 'Editar Producto' : 'Agregar Producto' }}</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="productoForm">
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Código</mat-label>
+            <input matInput formControlName="codigo" type="number" [disabled]="isEditing">
+            <mat-error *ngIf="productoForm.get('codigo')?.hasError('required')">
+              Código es requerido
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre" maxlength="100">
+            <mat-hint align="end">{{ productoForm.get('nombre')?.value?.length || 0 }}/100</mat-hint>
+            <mat-error *ngIf="productoForm.get('nombre')?.hasError('required')">
+              Nombre es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field full-width">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput formControlName="descripcion" maxlength="500" rows="4"></textarea>
+            <mat-hint align="end">{{ productoForm.get('descripcion')?.value?.length || 0 }}/500</mat-hint>
+            <mat-error *ngIf="productoForm.get('descripcion')?.hasError('required')">
+              Descripción es requerida
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Altura</mat-label>
+            <input matInput formControlName="altura" type="number" step="0.01">
+            <mat-error *ngIf="productoForm.get('altura')?.hasError('required')">
+              Altura es requerida
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Ancho</mat-label>
+            <input matInput formControlName="ancho" type="number" step="0.01">
+            <mat-error *ngIf="productoForm.get('ancho')?.hasError('required')">
+              Ancho es requerido
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Largo</mat-label>
+            <input matInput formControlName="largo" type="number" step="0.01">
+            <mat-error *ngIf="productoForm.get('largo')?.hasError('required')">
+              Largo es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Marca</mat-label>
+            <input matInput formControlName="marca" maxlength="100">
+            <mat-hint align="end">{{ productoForm.get('marca')?.value?.length || 0 }}/100</mat-hint>
+            <mat-error *ngIf="productoForm.get('marca')?.hasError('required')">
+              Marca es requerida
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Precio</mat-label>
+            <input matInput formControlName="precio" type="number" step="0.01">
+            <mat-error *ngIf="productoForm.get('precio')?.hasError('required')">
+              Precio es requerido
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="button-group">
+          <button mat-raised-button (click)="cancelar()">
+            Cancelar
+          </button>
+          <button mat-raised-button color="primary" (click)="guardar()">
+            Guardar
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

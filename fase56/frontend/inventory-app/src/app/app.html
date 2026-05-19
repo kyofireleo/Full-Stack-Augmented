@@ -1,0 +1,14 @@
+<mat-toolbar color="primary">
+  <span>{{ title }}</span>
+  <span class="spacer"></span>
+  <button mat-button (click)="navegarA('productos')">
+    Productos
+  </button>
+  <button mat-button (click)="navegarA('inventarios')">
+    Inventarios
+  </button>
+</mat-toolbar>
+
+<div class="content">
+  <router-outlet></router-outlet>
+</div>
